@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo 0 > /proc/sys/vm/laptop_mode
 echo med_power_with_dipm > /sys/class/scsi_host/host0/link_power_management_policy
@@ -13,9 +13,8 @@ echo ondemand > /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor
 echo ondemand > /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
 echo 130 > /sys/class/backlight/amdgpu_bl0/brightness
 echo 130 > /sys/class/backlight/amdgpu_bl0/actual_brightness
-lid = cat /proc/acpi/button/lid/LID0/state
-open = "state:      closed"
-if [$lid = $open]
-then
-        systemctl suspend
+lid=`cat /proc/acpi/button/lid/LID0/state`
+if [[ "$lid" == *"close"* ]]; then
+	sleep 2
+        eval systemctl suspend
 fi
